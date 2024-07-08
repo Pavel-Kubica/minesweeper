@@ -10,7 +10,7 @@ int main()
     while (!IOM.getInputHandler()->quitGame())
     {
         auto [x, y, mines, hardMode] = IOM.getInputHandler()->getGameParameters();
-        Board board{static_cast<size_t>(x), static_cast<size_t>(y)};
+        Board board{x, y};
         Game game(board, hardMode, mines, IOM);
         game.play();
     }
