@@ -1,6 +1,3 @@
-//
-// Created by ABCD on 29.06.2024.
-//
 
 #include "IOManager.hpp"
 
