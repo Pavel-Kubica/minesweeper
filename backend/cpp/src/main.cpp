@@ -9,7 +9,7 @@ int main()
     IOManager IOM;
     while (!IOM.getInputHandler()->quitGame())
     {
-        auto [x, y, mines, hardMode] = IOM.getInputHandler()->getGameParameters();
+        auto [x, y, mines, hardMode] = IOM.getInputHandler()->getNewGameParameters();
         Board board{x, y};
         Game game(board, hardMode, mines, IOM);
         game.play();

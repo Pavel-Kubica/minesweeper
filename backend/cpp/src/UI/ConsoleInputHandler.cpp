@@ -3,8 +3,10 @@
 #include "Move.hpp"
 #include <iostream>
 
-std::tuple<size_t, size_t, size_t, bool> ConsoleInputHandler::getGameParameters()
+std::tuple<size_t, size_t, size_t, bool> ConsoleInputHandler::getNewGameParameters()
 {
+    endCurrent = false;
+    quit = false;
     size_t x, y, mines;
     bool hardMode;
     std::cout << "x, y, mines, hardMode" << std::endl;

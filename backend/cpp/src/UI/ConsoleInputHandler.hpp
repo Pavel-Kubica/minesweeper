@@ -7,7 +7,7 @@
 class ConsoleInputHandler : public InputHandler
 {
 public:
-    std::tuple<size_t, size_t, size_t, bool> getGameParameters() override;
+    std::tuple<size_t, size_t, size_t, bool> getNewGameParameters() override;
     Move getMove() override;
     bool endCurrentGame() override;
     bool quitGame() override;
