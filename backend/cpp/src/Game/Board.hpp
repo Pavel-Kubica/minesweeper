@@ -21,7 +21,8 @@ public:
     // Force indicates that all adjacent tiles should be revealed even if the tile at pos isn't a zero
     void revealAdjacentRecursively(Position pos, bool force);
 
-    GameState getState() const;
+    [[nodiscard]] GameState getState() const;
+    [[nodiscard]] const std::vector<std::vector<UITile>>& getData() const;
 
 private:
     size_t width;

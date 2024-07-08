@@ -5,6 +5,7 @@
 
 int main()
 {
+    srand(12345);
     IOManager IOM;
     while (!IOM.getInputHandler()->quitGame())
     {

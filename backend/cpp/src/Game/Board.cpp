@@ -1,8 +1,9 @@
 
 #include "Board.hpp"
 #include <iostream>
+#include <cstdlib>
 
-Board::Board(size_t xSize, size_t ySize) : width(xSize), height(ySize), mines(NOT_SET), state(GameState::IN_PLAY)
+Board::Board(size_t xSize, size_t ySize) : width(xSize), height(ySize), mines(NOT_SET), state(GameState::IN_PLAY), revealedSafeTiles(0)
 {
     board.resize(xSize);
     for (auto& vec : board)
@@ -14,7 +15,39 @@ Board::Board(size_t xSize, size_t ySize) : width(xSize), height(ySize), mines(NO
 
 void Board::placeMines(size_t count)
 {
+    if (count >= width * height)
+        throw std::invalid_argument("Cannot place this many mines");
+    mines = count;
+    for (int i = 0; i < mines; ++i)
+    {
+        int x = rand() % width;
+        int y = rand() % height;
+        if (board[x][y].getContent().isMine()) // Hit a spot which already has a mine, have to random another position
+            i--;
+        else
+            board[x][y] = UITile(TileContent(TileContent::MINE));
+    }
+    calculateAllNumbers();
+}
 
+void Board::calculateAllNumbers()
+{
+    for (int x = 0; x < width; ++x)
+    {
+        for (int y = 0; y < height; ++y)
+        {
+            if (board[x][y].getContent().isMine())
+                continue;
+            auto adj = Position{x,y}.getAllAdjacent();
+            int mineCtr = 0;
+            for (auto& pos : adj)
+            {
+                if (!isOutOfBounds(pos) && board[pos.x][pos.y].getContent().isMine())
+                    mineCtr++;
+            }
+            board[x][y] = UITile(TileContent(mineCtr));
+        }
+    }
 }
 
 UITile& Board::operator[](Position pos)
@@ -79,11 +112,6 @@ GameState Board::getState() const
     return state;
 }
 
-void Board::calculateAllNumbers()
-{
-
-}
-
 void Board::revealAllMines()
 {
     for (auto& vec : board)
@@ -99,4 +127,9 @@ void Board::revealAllMines()
 bool Board::isOutOfBounds(Position pos) const
 {
     return pos.x < width && pos.y < height;
+}
+
+const std::vector<std::vector<UITile>>& Board::getData() const
+{
+    return board;
 }
