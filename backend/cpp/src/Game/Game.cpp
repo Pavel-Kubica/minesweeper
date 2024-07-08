@@ -1,11 +1,11 @@
 
 #include "Game.hpp"
 
-Game::Game(Board board, bool hardMode, size_t mines, IOManager& IOM) : hardMode(hardMode), board(std::move(board)), inputHandler(IOM.getInputHandler()), outputHandler(IOM.getOutputHandler())
+Game::Game(const Board& board, bool hardMode, size_t mines, IOManager& IOM) : hardMode(hardMode), board(board), inputHandler(IOM.getInputHandler()), outputHandler(IOM.getOutputHandler())
 {
     if (hardMode)
     {
-        board.placeMines(mines);
+        this->board.placeMines(mines);
     }
 }
 
@@ -21,5 +21,9 @@ void Game::play()
         board.reveal(nextMove);
         outputHandler->displayBoard(board);
     }
+    if (board.getState() == GameState::WON)
+        outputHandler->win();
+    else
+        outputHandler->lose();
 }
 
