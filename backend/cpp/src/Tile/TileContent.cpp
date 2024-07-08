@@ -21,3 +21,8 @@ int TileContent::getNumber() const
 {
     return number;
 }
+
+void TileContent::setNumber(int num)
+{
+    number = num;
+}

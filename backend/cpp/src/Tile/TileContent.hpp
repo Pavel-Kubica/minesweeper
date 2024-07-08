@@ -11,6 +11,7 @@ public:
     [[nodiscard]] bool isMine() const;
     [[nodiscard]] bool isZero() const;
     [[nodiscard]] int getNumber() const;
+    void setNumber(int num);
 
 private:
     int number;

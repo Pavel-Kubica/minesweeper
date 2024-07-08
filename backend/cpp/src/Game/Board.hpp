@@ -18,8 +18,7 @@ public:
     const UITile& operator[](Position pos) const;
 
     void reveal(Position pos);
-    // Force indicates that all adjacent tiles should be revealed even if the tile at pos isn't a zero
-    void revealAdjacentRecursively(Position pos, bool force);
+    void plainRevealWithEndCheck(Position pos);
 
     [[nodiscard]] GameState getState() const;
     [[nodiscard]] const std::vector<std::vector<UITile>>& getData() const;
@@ -35,7 +34,8 @@ private:
     void calculateAllNumbers();
     void revealAllMines();
 
-    void revealWithEndCheck(Position pos);
+    // Force indicates that all adjacent tiles should be revealed even if the tile at pos isn't a zero
     // Any zeroes encountered also have all their adjacent revealed
+    void revealAdjacentRecursively(Position pos, bool force);
     [[nodiscard]] bool isOutOfBounds(Position pos) const;
 };

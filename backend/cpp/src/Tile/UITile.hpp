@@ -13,7 +13,10 @@ public:
     UITile(TileContent content, TileState state);
     [[nodiscard]] bool isRevealed() const;
     [[nodiscard]] bool isFlagged() const;
-    [[nodiscard]] TileContent getContent() const;
+    [[nodiscard]] bool isMine() const;
+    [[nodiscard]] bool isZero() const;
+    [[nodiscard]] int getNumber() const;
+    void setNumber(int num);
 
     void reveal();
 

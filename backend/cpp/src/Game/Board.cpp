@@ -15,14 +15,14 @@ Board::Board(size_t xSize, size_t ySize) : width(xSize), height(ySize), mines(NO
 
 void Board::placeMines(size_t count)
 {
-    if (count >= width * height)
+    if (count >= (width * height - 10)) // Must leave space for easy mode initial reveal
         throw std::invalid_argument("Cannot place this many mines");
     mines = count;
     for (int i = 0; i < mines; ++i)
     {
         int x = rand() % width;
         int y = rand() % height;
-        if (board[x][y].getContent().isMine()) // Hit a spot which already has a mine, have to random another position
+        if (board[x][y].isMine() || board[x][y].isRevealed()) // Have to random another position
             i--;
         else
             board[x][y] = UITile(TileContent(TileContent::MINE));
@@ -36,16 +36,16 @@ void Board::calculateAllNumbers()
     {
         for (int y = 0; y < height; ++y)
         {
-            if (board[x][y].getContent().isMine())
+            if (board[x][y].isMine())
                 continue;
             auto adj = Position{x,y}.getAllAdjacent();
             int mineCtr = 0;
             for (auto& pos : adj)
             {
-                if (!isOutOfBounds(pos) && board[pos.x][pos.y].getContent().isMine())
+                if (!isOutOfBounds(pos) && board[pos.x][pos.y].isMine())
                     mineCtr++;
             }
-            board[x][y] = UITile(TileContent(mineCtr));
+            board[x][y].setNumber(mineCtr);
         }
     }
 }
@@ -74,28 +74,30 @@ void Board::reveal(Position pos)
                 flagCounter++;
         }
 
-        if (flagCounter == targetTile.getContent().getNumber())
+        if (flagCounter == targetTile.getNumber())
         {
             revealAdjacentRecursively(pos, true);
         }
         return;
     }
-    revealWithEndCheck(pos);
-    if (targetTile.getContent().isZero())
+    plainRevealWithEndCheck(pos);
+    if (targetTile.isZero())
     {
         revealAdjacentRecursively(pos, false);
     }
 }
 
-void Board::revealWithEndCheck(Position pos)
+void Board::plainRevealWithEndCheck(Position pos)
 {
+    if (isOutOfBounds(pos))
+        return;
     auto& targetTile = board[pos.x][pos.y];
     if (targetTile.isRevealed())
         return;
 
     targetTile.reveal();
     revealedSafeTiles++;
-    if (targetTile.getContent().isMine())
+    if (targetTile.isMine())
     {
         state = GameState::LOST;
         revealAllMines();
@@ -110,8 +112,8 @@ void Board::revealWithEndCheck(Position pos)
 
 void Board::revealAdjacentRecursively(Position pos, bool force)
 {
-    revealWithEndCheck(pos);
-    if (force || board[pos.x][pos.y].getContent().isZero())
+    plainRevealWithEndCheck(pos);
+    if (force || board[pos.x][pos.y].isZero())
     {
         auto allAdjacent = pos.getAllAdjacent();
         for (auto& adjPos: allAdjacent)
@@ -133,7 +135,7 @@ void Board::revealAllMines()
     {
         for (auto& tile : vec)
         {
-            if (tile.getContent().isMine())
+            if (tile.isMine())
                 tile.reveal();
         }
     }
