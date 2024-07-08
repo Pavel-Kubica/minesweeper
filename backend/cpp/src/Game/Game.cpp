@@ -19,7 +19,11 @@ void Game::play()
     {
         if (inputHandler->endCurrentGame() || inputHandler->quitGame())
             return;
+
         Move nextMove = inputHandler->getMove();
+        if (board.isOutOfBounds(nextMove.target))
+            continue;
+
         if (nextMove.type == MoveType::FLAG)
             board.flag(nextMove.target);
         else
@@ -34,17 +38,24 @@ void Game::play()
 
 void Game::doEasyModeFirstMove()
 {
-    Move firstMove = inputHandler->getMove();
-    board.plainRevealWithEndCheck(firstMove.target);
-    for (auto& adjPos : firstMove.target.getAllAdjacent())
+    bool validMove = false;
+    while (!validMove)
     {
-        board.plainRevealWithEndCheck(adjPos);
+        Move firstMove = inputHandler->getMove();
+        validMove = !board.isOutOfBounds(firstMove.target);
+        if (!validMove)
+            continue;
+        board.plainRevealWithEndCheck(firstMove.target);
+        for (auto& adjPos: firstMove.target.getAllAdjacent())
+        {
+            board.plainRevealWithEndCheck(adjPos);
+        }
+        board.placeMines(mines);
+        for (auto& adjPos: firstMove.target.getAllAdjacent())
+        {
+            board.revealAdjacentRecursively(adjPos);
+        }
+        outputHandler->displayBoard(board);
     }
-    board.placeMines(mines);
-    for (auto& adjPos : firstMove.target.getAllAdjacent())
-    {
-        board.revealAdjacentRecursively(adjPos);
-    }
-    outputHandler->displayBoard(board);
 }
 
