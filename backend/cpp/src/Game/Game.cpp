@@ -26,8 +26,11 @@ void Game::play()
         }
         outputHandler->displayBoard(board);
     }
-    while (board.getState() == GameState::IN_PLAY && !inputHandler->endCurrentGame() && !inputHandler->quitGame()) // main loop
+    
+    while (board.getState() == GameState::IN_PLAY) // main loop
     {
+        if (inputHandler->endCurrentGame() || inputHandler->quitGame())
+            return;
         Move nextMove = inputHandler->getMove();
         if (nextMove.type == MoveType::FLAG)
             board.flag(nextMove.target);

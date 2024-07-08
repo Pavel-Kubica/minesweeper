@@ -12,4 +12,7 @@ public:
     virtual Move getMove() = 0;
     virtual bool endCurrentGame() = 0;
     virtual bool quitGame() = 0;
+protected:
+    bool endCurrent = false;
+    bool quit = false;
 };

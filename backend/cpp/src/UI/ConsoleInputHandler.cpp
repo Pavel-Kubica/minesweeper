@@ -18,16 +18,20 @@ Move ConsoleInputHandler::getMove()
     int x, y;
     char type;
     std::cin >> x >> y >> type;
+    if (x == y && x == -1)
+        endCurrent = true;
+    if (type == 'q')
+        quit = true;
     MoveType moveType = type == 'f' ? MoveType::FLAG : MoveType::REVEAL;
     return {{x,y},moveType};
 }
 
 bool ConsoleInputHandler::endCurrentGame()
 {
-    return false;
+    return endCurrent;
 }
 
 bool ConsoleInputHandler::quitGame()
 {
-    return false;
+    return quit;
 }
