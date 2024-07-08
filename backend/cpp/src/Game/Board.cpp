@@ -90,14 +90,17 @@ void Board::reveal(Position pos)
 void Board::revealWithEndCheck(Position pos)
 {
     auto& targetTile = board[pos.x][pos.y];
+    if (targetTile.isRevealed())
+        return;
+
     targetTile.reveal();
+    revealedSafeTiles++;
     if (targetTile.getContent().isMine())
     {
         state = GameState::LOST;
         revealAllMines();
         return;
     }
-    revealedSafeTiles++;
     if (revealedSafeTiles >= (width * height - mines))
     {
         state = GameState::WON;
