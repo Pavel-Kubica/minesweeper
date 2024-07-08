@@ -8,9 +8,10 @@ class UITile
 public:
     explicit UITile(TileContent content);
     UITile(TileContent content, TileState state);
-    void reveal();
-    TileContent getContent() const;
     bool isRevealed() const;
+    TileContent getContent() const;
+
+    void reveal();
     void print(std::ostream& os) const;
 
 private:
