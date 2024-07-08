@@ -42,7 +42,7 @@ void Board::calculateAllNumbers()
             int mineCtr = 0;
             for (auto& pos : adj)
             {
-                if (!isOutOfBounds(pos) && board[pos.x][pos.y].isMine())
+                if (!isOutOfBounds(pos) && at(pos).isMine())
                     mineCtr++;
             }
             board[x][y].setNumber(mineCtr);
@@ -50,25 +50,25 @@ void Board::calculateAllNumbers()
     }
 }
 
-UITile& Board::operator[](Position pos)
+UITile& Board::at(Position pos)
 {
     return board[pos.x][pos.y];
 }
 
-const UITile& Board::operator[](Position pos) const
+const UITile& Board::at(Position pos) const
 {
     return board[pos.x][pos.y];
 }
 
 void Board::flag(Position pos)
 {
-    if (!board[pos.x][pos.y].isRevealed())
-        board[pos.x][pos.y].flag();
+    if (!at(pos).isRevealed())
+        at(pos).flag();
 }
 
 void Board::reveal(Position pos)
 {
-    auto& targetTile = board[pos.x][pos.y];
+    auto& targetTile = at(pos);
     if (targetTile.isRevealed())
     { // RLClick on already revealed tile should reveal all adjacent
         int flagCounter = 0;
@@ -77,7 +77,7 @@ void Board::reveal(Position pos)
         {
             if (isOutOfBounds(adjPos))
                 continue;
-            auto& adjTile = board[adjPos.x][adjPos.y];
+            auto& adjTile = at(adjPos);
             if (adjTile.isFlagged())
                 flagCounter++;
         }
@@ -99,7 +99,7 @@ void Board::plainRevealWithEndCheck(Position pos)
 {
     if (isOutOfBounds(pos))
         return;
-    auto& targetTile = board[pos.x][pos.y];
+    auto& targetTile = at(pos);
     if (targetTile.isRevealed())
         return;
 
@@ -121,14 +121,14 @@ void Board::plainRevealWithEndCheck(Position pos)
 void Board::revealAdjacentRecursively(Position pos, bool force)
 {
     plainRevealWithEndCheck(pos);
-    if (force || board[pos.x][pos.y].isZero())
+    if (force || at(pos).isZero())
     {
         auto allAdjacent = pos.getAllAdjacent();
         for (auto& adjPos: allAdjacent)
         {
             if (!isOutOfBounds(adjPos) &&
-                !board[adjPos.x][adjPos.y].isRevealed() &&
-                !board[adjPos.x][adjPos.y].isFlagged())
+                !at(adjPos).isRevealed() &&
+                !at(adjPos).isFlagged())
                 revealAdjacentRecursively(adjPos, false);
         }
     }

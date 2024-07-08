@@ -14,8 +14,8 @@ public:
     Board(size_t xSize, size_t ySize);
     void placeMines(size_t count);
 
-    UITile& operator[](Position pos);
-    const UITile& operator[](Position pos) const;
+    UITile& at(Position pos);
+    const UITile& at(Position pos) const;
 
     void flag(Position pos);
     void reveal(Position pos);
@@ -26,6 +26,8 @@ public:
 
     [[nodiscard]] GameState getState() const;
     [[nodiscard]] const std::vector<std::vector<UITile>>& getData() const;
+
+    [[nodiscard]] bool isOutOfBounds(Position pos) const;
 
 private:
     size_t width;
@@ -38,5 +40,4 @@ private:
     void calculateAllNumbers();
     void revealAllMines();
 
-    [[nodiscard]] bool isOutOfBounds(Position pos) const;
 };
