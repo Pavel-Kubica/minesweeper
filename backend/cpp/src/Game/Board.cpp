@@ -69,8 +69,10 @@ void Board::reveal(Position pos)
         auto adjPositions = pos.getAllAdjacent();
         for (auto& adjPos : adjPositions)
         {
+            if (isOutOfBounds(adjPos))
+                continue;
             auto& adjTile = board[adjPos.x][adjPos.y];
-            if (!isOutOfBounds(adjPos) && adjTile.isRevealed() && adjTile.isFlagged())
+            if (adjTile.isRevealed() && adjTile.isFlagged())
                 flagCounter++;
         }
 

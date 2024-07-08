@@ -13,6 +13,7 @@ public:
 
 private:
     bool hardMode;
+    size_t mines;
     Board board;
     InputHandler* inputHandler;
     OutputHandler* outputHandler;
