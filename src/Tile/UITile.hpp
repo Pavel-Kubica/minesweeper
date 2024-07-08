@@ -6,6 +6,7 @@
 class UITile
 {
 public:
+    UITile();
     explicit UITile(TileContent content);
     UITile(TileContent content, TileState state);
     bool isRevealed() const;
