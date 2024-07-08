@@ -5,12 +5,13 @@
 class Game
 {
 public:
-    Game(Board board);
+    // On hard mode, mines are placed immediately upon starting.
+    // On easy mode, there is a guarantee that the first revealed tile will be a 0
+    Game(Board board, bool hardMode, size_t mines);
     void play();
 
 private:
-    void getMove();
-    void executeMove();
+    // returns the position of the player's next desired move
+    Position getMove();
     Board board;
-    bool gameEnded;
 };

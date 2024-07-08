@@ -6,13 +6,15 @@
 
 int main(int argc, char** argv)
 {
-    if (argc < 3) return 1;
+    // TODO proper input sanitation
+    if (argc < 4) return 1;
     int x = atoi(argv[1]);
-    int y = atoi (argv[2]);
-    if (x < 1 || y < 1)
+    int y = atoi(argv[2]);
+    int mines = atoi(argv[3]);
+    if (x < 1 || y < 1 || mines > x * y)
         return 2;
     Board board{static_cast<size_t>(x), static_cast<size_t>(y)};
-    Game game(board);
+    Game game(board, true, mines);
     game.play();
 
     return 0;
