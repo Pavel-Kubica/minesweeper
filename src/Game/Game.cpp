@@ -1,29 +1,25 @@
 
-
 #include "Game.hpp"
 
-Game::Game(Board board, bool hardMode, size_t mines) : board(std::move(board))
+Game::Game(Board board, bool hardMode, size_t mines, IOManager& IOM) : hardMode(hardMode), board(std::move(board)), inputHandler(IOM.getInputHandler()), outputHandler(IOM.getOutputHandler())
 {
     if (hardMode)
     {
         board.placeMines(mines);
     }
-    // TODO easy mode
 }
 
 void Game::play()
 {
-    while (board.getState() == GameState::IN_PLAY) // main loop
+    if (!hardMode)
     {
-        Position nextMove = getMove();
+        // TODO
+    }
+    while (board.getState() == GameState::IN_PLAY && !inputHandler->endCurrentGame() && !inputHandler->quitGame()) // main loop
+    {
+        Position nextMove = inputHandler->getMove();
         board.reveal(nextMove);
-
+        outputHandler->displayBoard(board);
     }
 }
-
-Position Game::getMove()
-{
-
-}
-
 

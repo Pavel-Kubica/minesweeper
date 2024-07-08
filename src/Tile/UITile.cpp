@@ -3,9 +3,7 @@
 
 
 UITile::UITile() : content(TileContent{0}), state(TileState::EMPTY)
-{
-
-}
+{}
 
 UITile::UITile(TileContent content) : content(content), state(TileState::EMPTY)
 {}
