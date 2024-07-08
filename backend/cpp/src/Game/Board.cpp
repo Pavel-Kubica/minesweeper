@@ -126,7 +126,8 @@ void Board::revealAllMines()
 
 bool Board::isOutOfBounds(Position pos) const
 {
-    return pos.x < width && pos.y < height;
+    return pos.x >= width || pos.x < 0 ||
+           pos.y >= height || pos.y < 0;
 }
 
 const std::vector<std::vector<UITile>>& Board::getData() const
