@@ -62,10 +62,22 @@ const UITile& Board::operator[](Position pos) const
 
 void Board::reveal(Position pos)
 {
-    auto targetTile = board[pos.x][pos.y];
+    auto& targetTile = board[pos.x][pos.y];
     if (targetTile.isRevealed())
     { // RLClick on already revealed tile should reveal all adjacent
-        revealAdjacentRecursively(pos, true);
+        int flagCounter = 0;
+        auto adjPositions = pos.getAllAdjacent();
+        for (auto& adjPos : adjPositions)
+        {
+            auto& adjTile = board[adjPos.x][adjPos.y];
+            if (!isOutOfBounds(adjPos) && adjTile.isRevealed() && adjTile.isFlagged())
+                flagCounter++;
+        }
+
+        if (flagCounter == targetTile.getContent().getNumber())
+        {
+            revealAdjacentRecursively(pos, true);
+        }
         return;
     }
     revealWithEndCheck(pos);
@@ -77,7 +89,7 @@ void Board::reveal(Position pos)
 
 void Board::revealWithEndCheck(Position pos)
 {
-    auto targetTile = board[pos.x][pos.y];
+    auto& targetTile = board[pos.x][pos.y];
     targetTile.reveal();
     if (targetTile.getContent().isMine())
     {
