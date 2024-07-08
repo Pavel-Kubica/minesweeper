@@ -13,15 +13,12 @@ Game::Game(Board board, bool hardMode, size_t mines) : board(std::move(board))
 
 void Game::play()
 {
-    while (board.getState() == GameState::IN_PLAY)
+    while (board.getState() == GameState::IN_PLAY) // main loop
     {
         Position nextMove = getMove();
         board.reveal(nextMove);
+
     }
-    if (board.getState() == GameState::WON)
-        board.printVictoryBoard();
-    else
-        board.printDefeatBoard();
 }
 
 Position Game::getMove()
