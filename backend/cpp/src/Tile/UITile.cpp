@@ -16,6 +16,11 @@ bool UITile::isRevealed() const
     return state == TileState::MINE || state == TileState::NUMBER;
 }
 
+bool UITile::isFlagged() const
+{
+    return state == TileState::FLAG;
+}
+
 TileContent UITile::getContent() const
 {
     return content;
@@ -28,3 +33,4 @@ void UITile::reveal()
     else
         state = TileState::NUMBER;
 }
+
