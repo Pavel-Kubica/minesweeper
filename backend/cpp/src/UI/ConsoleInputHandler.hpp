@@ -1,0 +1,16 @@
+//
+// Created by ABCD on 07.07.2024.
+//
+
+#ifndef MINESWEEPER_CONSOLEINPUTHANDLER_HPP
+#define MINESWEEPER_CONSOLEINPUTHANDLER_HPP
+
+
+
+class ConsoleInputHandler {
+
+};
+
+
+
+#endif //MINESWEEPER_CONSOLEINPUTHANDLER_HPP

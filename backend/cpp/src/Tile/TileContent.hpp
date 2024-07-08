@@ -7,11 +7,10 @@ class TileContent
 public:
     static constexpr int MINE = -1;
 
-    TileContent(int number);
-    bool isMine() const;
-    bool isZero() const;
-
-    void print(std::ostream& os) const;
+    explicit TileContent(int number);
+    [[nodiscard]] bool isMine() const;
+    [[nodiscard]] bool isZero() const;
+    [[nodiscard]] int getNumber() const;
 
 private:
     int number;

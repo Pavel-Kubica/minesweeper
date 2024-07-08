@@ -2,7 +2,10 @@
 #include "TileContent.hpp"
 
 TileContent::TileContent(int number) : number(number)
-{}
+{
+    if (number < MINE || number > 8)
+        throw std::invalid_argument("Invalid tile number!");
+}
 
 bool TileContent::isMine() const
 {
@@ -14,8 +17,7 @@ bool TileContent::isZero() const
     return number == 0;
 }
 
-void TileContent::print(std::ostream &os) const
+int TileContent::getNumber() const
 {
-    // TODO printing
-
+    return number;
 }

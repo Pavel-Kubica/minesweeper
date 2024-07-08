@@ -2,6 +2,8 @@
 #pragma once
 #include "TileContent.hpp"
 #include "Enums/TileState.hpp"
+#include "Position.hpp"
+#include <vector>
 
 class UITile
 {
@@ -9,11 +11,10 @@ public:
     UITile();
     explicit UITile(TileContent content);
     UITile(TileContent content, TileState state);
-    bool isRevealed() const;
-    TileContent getContent() const;
+    [[nodiscard]] bool isRevealed() const;
+    [[nodiscard]] TileContent getContent() const;
 
     void reveal();
-    void print(std::ostream& os) const;
 
 private:
     TileState state;

@@ -28,25 +28,3 @@ void UITile::reveal()
     else
         state = TileState::NUMBER;
 }
-
-void UITile::print(std::ostream &os) const
-{
-    // TODO printing
-    switch (state)
-    {
-        case TileState::EMPTY:
-
-            break;
-        case TileState::FLAG:
-
-            break;
-        case TileState::MINE:
-
-            break;
-        case TileState::NUMBER:
-
-            break;
-        default:
-            throw std::runtime_error("unreachable branch");
-    }
-}
