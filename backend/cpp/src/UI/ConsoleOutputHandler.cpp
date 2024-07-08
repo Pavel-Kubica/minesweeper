@@ -18,7 +18,9 @@ void ConsoleOutputHandler::displayBoard(const Board& board)
         for (const auto& tile : vec)
         {
             char symbol;
-            if (!tile.isRevealed())
+            if (tile.isFlagged())
+                symbol = 'F';
+            else if (!tile.isRevealed())
                 symbol = ' ';
             else if (tile.isMine())
                 symbol = 'X';

@@ -17,6 +17,7 @@ public:
     UITile& operator[](Position pos);
     const UITile& operator[](Position pos) const;
 
+    void flag(Position pos);
     void reveal(Position pos);
     void plainRevealWithEndCheck(Position pos);
     // Force indicates that all adjacent tiles should be revealed even if the tile at pos isn't a zero

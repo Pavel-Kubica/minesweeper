@@ -60,6 +60,12 @@ const UITile& Board::operator[](Position pos) const
     return board[pos.x][pos.y];
 }
 
+void Board::flag(Position pos)
+{
+    if (!board[pos.x][pos.y].isRevealed())
+        board[pos.x][pos.y].flag();
+}
+
 void Board::reveal(Position pos)
 {
     auto& targetTile = board[pos.x][pos.y];
@@ -72,7 +78,7 @@ void Board::reveal(Position pos)
             if (isOutOfBounds(adjPos))
                 continue;
             auto& adjTile = board[adjPos.x][adjPos.y];
-            if (adjTile.isRevealed() && adjTile.isFlagged())
+            if (adjTile.isFlagged())
                 flagCounter++;
         }
 
@@ -120,7 +126,9 @@ void Board::revealAdjacentRecursively(Position pos, bool force)
         auto allAdjacent = pos.getAllAdjacent();
         for (auto& adjPos: allAdjacent)
         {
-            if (!isOutOfBounds(adjPos) && !board[adjPos.x][adjPos.y].isRevealed())
+            if (!isOutOfBounds(adjPos) &&
+                !board[adjPos.x][adjPos.y].isRevealed() &&
+                !board[adjPos.x][adjPos.y].isFlagged())
                 revealAdjacentRecursively(adjPos, false);
         }
     }

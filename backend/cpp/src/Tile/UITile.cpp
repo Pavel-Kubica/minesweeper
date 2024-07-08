@@ -36,6 +36,11 @@ int UITile::getNumber() const
     return content.getNumber();
 }
 
+void UITile::flag()
+{
+    state = TileState::FLAG;
+}
+
 void UITile::setNumber(int num)
 {
     content.setNumber(num);

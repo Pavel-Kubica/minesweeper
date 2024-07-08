@@ -16,6 +16,7 @@ public:
     [[nodiscard]] bool isMine() const;
     [[nodiscard]] bool isZero() const;
     [[nodiscard]] int getNumber() const;
+    void flag();
     void setNumber(int num);
 
     void reveal();

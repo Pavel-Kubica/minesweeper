@@ -1,5 +1,6 @@
 
 #include "ConsoleInputHandler.hpp"
+#include "Move.hpp"
 #include <iostream>
 
 std::tuple<size_t, size_t, size_t, bool> ConsoleInputHandler::getGameParameters()
@@ -11,12 +12,14 @@ std::tuple<size_t, size_t, size_t, bool> ConsoleInputHandler::getGameParameters(
     return {x, y, mines, hardMode};
 }
 
-Position ConsoleInputHandler::getMove()
+Move ConsoleInputHandler::getMove()
 {
     std::cout << "Move:" << std::endl;
     int x, y;
-    std::cin >> x >> y;
-    return {x,y};
+    char type;
+    std::cin >> x >> y >> type;
+    MoveType moveType = type == 'f' ? MoveType::FLAG : MoveType::REVEAL;
+    return {{x,y},moveType};
 }
 
 bool ConsoleInputHandler::endCurrentGame()

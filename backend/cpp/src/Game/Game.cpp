@@ -13,14 +13,14 @@ void Game::play()
 {
     if (!hardMode)
     {
-        Position firstMove = inputHandler->getMove();
-        board.plainRevealWithEndCheck(firstMove);
-        for (auto& adjPos : firstMove.getAllAdjacent())
+        Move firstMove = inputHandler->getMove();
+        board.plainRevealWithEndCheck(firstMove.target);
+        for (auto& adjPos : firstMove.target.getAllAdjacent())
         {
             board.plainRevealWithEndCheck(adjPos);
         }
         board.placeMines(mines);
-        for (auto& adjPos : firstMove.getAllAdjacent())
+        for (auto& adjPos : firstMove.target.getAllAdjacent())
         {
             board.revealAdjacentRecursively(adjPos);
         }
@@ -28,8 +28,11 @@ void Game::play()
     }
     while (board.getState() == GameState::IN_PLAY && !inputHandler->endCurrentGame() && !inputHandler->quitGame()) // main loop
     {
-        Position nextMove = inputHandler->getMove();
-        board.reveal(nextMove);
+        Move nextMove = inputHandler->getMove();
+        if (nextMove.type == MoveType::FLAG)
+            board.flag(nextMove.target);
+        else
+            board.reveal(nextMove.target);
         outputHandler->displayBoard(board);
     }
     if (board.getState() == GameState::WON)
