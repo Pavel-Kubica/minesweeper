@@ -1,9 +1,13 @@
 
 #include "IOManager.hpp"
+#include "ConsoleInputHandler.hpp"
+#include "ConsoleOutputHandler.hpp"
 
 IOManager::IOManager()
 {
-    // TODO load from config which IO method we use
+    // TODO TEMPORARY
+    inputHandler = std::make_unique<ConsoleInputHandler>();
+    outputHandler = std::make_unique<ConsoleOutputHandler>();
 }
 
 InputHandler* IOManager::getInputHandler()

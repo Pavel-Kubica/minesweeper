@@ -7,8 +7,9 @@ class OutputHandler
 public:
     virtual ~OutputHandler() = default;
 
-    static std::unique_ptr<OutputHandler> getOutputHandler();
     virtual void displayBoard(const Board& board) = 0;
+    virtual void win() = 0;
+    virtual void lose() = 0;
 protected:
 
 };

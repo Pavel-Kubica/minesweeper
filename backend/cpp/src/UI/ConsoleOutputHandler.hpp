@@ -1,16 +1,14 @@
-//
-// Created by ABCD on 07.07.2024.
-//
 
-#ifndef MINESWEEPER_CONSOLEOUTPUTHANDLER_HPP
-#define MINESWEEPER_CONSOLEOUTPUTHANDLER_HPP
+#pragma once
+#include "OutputHandler.hpp"
 
+class ConsoleOutputHandler : public OutputHandler
+{
+public:
 
+    void displayBoard(const Board& board) override;
 
-class ConsoleOutputHandler {
+    void win() override;
 
+    void lose() override;
 };
-
-
-
-#endif //MINESWEEPER_CONSOLEOUTPUTHANDLER_HPP
