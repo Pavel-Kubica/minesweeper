@@ -17,4 +17,6 @@ private:
     Board board;
     InputHandler* inputHandler;
     OutputHandler* outputHandler;
+
+    void doEasyModeFirstMove();
 };

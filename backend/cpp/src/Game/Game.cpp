@@ -13,20 +13,8 @@ void Game::play()
 {
     if (!hardMode)
     {
-        Move firstMove = inputHandler->getMove();
-        board.plainRevealWithEndCheck(firstMove.target);
-        for (auto& adjPos : firstMove.target.getAllAdjacent())
-        {
-            board.plainRevealWithEndCheck(adjPos);
-        }
-        board.placeMines(mines);
-        for (auto& adjPos : firstMove.target.getAllAdjacent())
-        {
-            board.revealAdjacentRecursively(adjPos);
-        }
-        outputHandler->displayBoard(board);
+        doEasyModeFirstMove();
     }
-    
     while (board.getState() == GameState::IN_PLAY) // main loop
     {
         if (inputHandler->endCurrentGame() || inputHandler->quitGame())
@@ -42,5 +30,21 @@ void Game::play()
         outputHandler->win();
     else
         outputHandler->lose();
+}
+
+void Game::doEasyModeFirstMove()
+{
+    Move firstMove = inputHandler->getMove();
+    board.plainRevealWithEndCheck(firstMove.target);
+    for (auto& adjPos : firstMove.target.getAllAdjacent())
+    {
+        board.plainRevealWithEndCheck(adjPos);
+    }
+    board.placeMines(mines);
+    for (auto& adjPos : firstMove.target.getAllAdjacent())
+    {
+        board.revealAdjacentRecursively(adjPos);
+    }
+    outputHandler->displayBoard(board);
 }
 
