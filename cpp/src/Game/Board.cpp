@@ -5,6 +5,8 @@
 
 Board::Board(size_t xSize, size_t ySize) : width(xSize), height(ySize), mines(NOT_SET), state(GameState::IN_PLAY), revealedSafeTiles(0)
 {
+    if (xSize < MIN_SIZE || xSize > MAX_SIZE || ySize < MIN_SIZE || ySize > MAX_SIZE)
+        throw std::runtime_error("Cannot initialize a board with these dimensions!");
     board.resize(xSize);
     for (auto& vec : board)
     {
@@ -120,6 +122,8 @@ void Board::plainRevealWithEndCheck(Position pos)
 
 void Board::revealAdjacentRecursively(Position pos, bool force)
 {
+    if (isOutOfBounds(pos))
+        return;
     plainRevealWithEndCheck(pos);
     if (force || at(pos).isZero())
     {

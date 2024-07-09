@@ -10,6 +10,8 @@ class Board
 {
 public:
     constexpr static size_t NOT_SET = -1;
+    constexpr static size_t MIN_SIZE = 10;
+    constexpr static size_t MAX_SIZE = 99;
 
     Board(size_t xSize, size_t ySize);
     void placeMines(size_t count);
