@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="game.js" defer></script>
+    <title>Minesweeper</title>
+</head>
+<body>
+    <form id="input">
+        <label for="widthInput">Width</label>
+        <input type="text" id="widthInput" name="widthInput">
+        <br>
+        <label for="heightInput">Height</label>
+        <input type="text" id="heightInput" name="heightInput">
+        <br>
+        <label for="mineInput">Mine count</label>
+        <input type="text" id="mineInput" name="mineInput">
+        <button id="startButton" type="button" onclick="startGame()">Start</button>
+    </form>
+    <div id="game-window">
+
+    </div>
+</body>
+</html>
