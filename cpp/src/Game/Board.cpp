@@ -70,6 +70,8 @@ void Board::flag(Position pos)
 
 void Board::reveal(Position pos)
 {
+    if (isOutOfBounds(pos))
+        throw std::invalid_argument("Position " + pos.toString() + " is out of bounds!");
     auto& targetTile = at(pos);
     if (targetTile.isRevealed())
     { // RLClick on already revealed tile should reveal all adjacent
@@ -100,7 +102,7 @@ void Board::reveal(Position pos)
 void Board::plainRevealWithEndCheck(Position pos)
 {
     if (isOutOfBounds(pos))
-        return;
+        throw std::invalid_argument("Position " + pos.toString() + " is out of bounds!");
     auto& targetTile = at(pos);
     if (targetTile.isRevealed())
         return;
@@ -123,7 +125,7 @@ void Board::plainRevealWithEndCheck(Position pos)
 void Board::revealAdjacentRecursively(Position pos, bool force)
 {
     if (isOutOfBounds(pos))
-        return;
+        throw std::invalid_argument("Position " + pos.toString() + " is out of bounds!");
     plainRevealWithEndCheck(pos);
     if (force || at(pos).isZero())
     {

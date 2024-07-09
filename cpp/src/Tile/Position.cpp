@@ -14,3 +14,8 @@ std::vector<Position> Position::getAllAdjacent() {
         {x + 1, y + 1}
     };
 }
+
+std::string Position::toString() const
+{
+    return "{" + std::to_string(x) + ", " + std::to_string(y) + "}";
+}
