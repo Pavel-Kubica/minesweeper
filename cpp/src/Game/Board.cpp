@@ -6,7 +6,7 @@
 Board::Board(size_t xSize, size_t ySize) : width(xSize), height(ySize), mines(NOT_SET), state(GameState::IN_PLAY), revealedSafeTiles(0)
 {
     if (xSize < MIN_SIZE || xSize > MAX_SIZE || ySize < MIN_SIZE || ySize > MAX_SIZE)
-        throw std::runtime_error("Cannot initialize a board with these dimensions!");
+        throw std::invalid_argument("Cannot initialize a board with these dimensions!");
     board.resize(xSize);
     for (auto& vec : board)
     {
@@ -15,10 +15,16 @@ Board::Board(size_t xSize, size_t ySize) : width(xSize), height(ySize), mines(NO
 
 }
 
-Board::Board(const std::vector<std::vector<UITile>>& board) : width(board.size()), height(board[0].size()), mines(0), state(GameState::IN_PLAY), revealedSafeTiles(0), board(std::move(board))
+Board::Board(const std::vector<std::vector<UITile>>& board) : width(board.size()), height(board[0].size()), mines(0), state(GameState::IN_PLAY), revealedSafeTiles(0), board(board)
 {
+    if (width < MIN_SIZE || width > MAX_SIZE || height < MIN_SIZE || height > MAX_SIZE)
+        throw std::invalid_argument("Cannot initialize a board with these dimensions!");
     for (auto& vec : board)
     {
+        if (vec.size() != height)
+        {
+            throw std::invalid_argument("Attempting to initialize non-rectangular board!");
+        }
         for (auto& tile : vec)
         {
             if (tile.isRevealed() && !tile.isMine())
