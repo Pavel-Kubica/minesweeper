@@ -9,10 +9,14 @@ let firstMove = true;
 let mines = undefined;
 let width = undefined;
 let height = undefined;
+let revealedSafe = 0;
 
 
 function startGame()
 {
+    revealedSafe = 0;
+    data = [];
+    firstMove = true;
     width = document.getElementById("widthInput").value;
     if (width == 0)
         width = DEFAULT_WIDTH;
@@ -22,11 +26,11 @@ function startGame()
     mines = document.getElementById("mineInput").value;
     if (mines == 0)
         mines = DEFAULT_MINES;
-    data = [];
     generateEmptyBoard(width, height);
 }
 function generateEmptyBoard(width, height)
 {
+    document.getElementById("game-window").innerHTML = "";
     let gameDiv = document.createElement("div");
     gameDiv.style.width = width * 32 + "px";
     gameDiv.style.height = height * 32 + "px";
@@ -100,7 +104,8 @@ function revealOne(tile)
 
 function flagTile(tile)
 {
-    tile.classList.replace("blank", "flag");
+    if (tile.classList.replace("flag", "blank"));
+    else tile.classList.replace("blank", "flag");
 }
 
 function win()
