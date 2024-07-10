@@ -84,7 +84,8 @@ function revealTile(tile)
  */
 function revealAdjacentRecursively(tile, force = false)
 {
-    revealOne(tile);
+    if (tile.classList.contains("blank"))
+        revealOne(tile);
     if (force || data[tile.id] === 0)
     {
         let adjacentTiles = getSurroundingValidTiles(tile.id).filter( (tileId) => document.getElementById(tileId).classList.contains("blank"))
@@ -96,10 +97,14 @@ function revealAdjacentRecursively(tile, force = false)
 
 function revealOne(tile)
 {
-    let retval = tile.classList.replace("blank", "num" + data[tile.id]);
+    let revealedNow = tile.classList.replace("blank", "num" + data[tile.id]);
+    if (!revealedNow)
+        return false;
     if (data[tile.id] === MINE)
         lose();
-    return retval;
+    if (++revealedSafe >= width * height - mines)
+        win();
+    return true;
 }
 
 function flagTile(tile)
@@ -110,12 +115,12 @@ function flagTile(tile)
 
 function win()
 {
-
+    revealAllMines();
 }
 
 function lose()
 {
-    
+    revealAllMines();
 }
 
 function revealAllMines()
