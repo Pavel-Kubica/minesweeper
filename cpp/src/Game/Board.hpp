@@ -14,6 +14,7 @@ public:
     constexpr static size_t MAX_SIZE = 99;
 
     Board(size_t xSize, size_t ySize);
+    Board(const std::vector<std::vector<UITile>>& board);
     void placeMines(size_t count);
 
     UITile& at(Position pos);
@@ -30,6 +31,8 @@ public:
     [[nodiscard]] const std::vector<std::vector<UITile>>& getData() const;
 
     [[nodiscard]] bool isOutOfBounds(Position pos) const;
+    void calculateAllNumbers();
+    void revealAllMines();
 
 private:
     size_t width;
@@ -39,7 +42,5 @@ private:
     size_t revealedSafeTiles;
     std::vector<std::vector<UITile>> board;
 
-    void calculateAllNumbers();
-    void revealAllMines();
 
 };

@@ -15,6 +15,20 @@ Board::Board(size_t xSize, size_t ySize) : width(xSize), height(ySize), mines(NO
 
 }
 
+Board::Board(const std::vector<std::vector<UITile>>& board) : width(board.size()), height(board[0].size()), mines(0), state(GameState::IN_PLAY), revealedSafeTiles(0), board(std::move(board))
+{
+    for (auto& vec : board)
+    {
+        for (auto& tile : vec)
+        {
+            if (tile.isRevealed() && !tile.isMine())
+                revealedSafeTiles++;
+            else if (tile.isMine())
+                mines++;
+        }
+    }
+}
+
 void Board::placeMines(size_t count)
 {
     if (count >= (width * height - 10)) // Must leave space for easy mode initial reveal
@@ -167,3 +181,4 @@ const std::vector<std::vector<UITile>>& Board::getData() const
 {
     return board;
 }
+

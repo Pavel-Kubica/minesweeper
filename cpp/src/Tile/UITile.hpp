@@ -9,7 +9,7 @@ class UITile
 {
 public:
     UITile();
-    explicit UITile(TileContent content);
+    UITile(TileContent content);
     UITile(TileContent content, TileState state);
     [[nodiscard]] bool isRevealed() const;
     [[nodiscard]] bool isFlagged() const;
