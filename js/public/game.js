@@ -1,13 +1,16 @@
 
-const DEFAULT_WIDTH = 30;
-const DEFAULT_HEIGHT = 16;
-const DEFAULT_MINES = 99
+const DEFAULT_WIDTH = 9;
+const DEFAULT_HEIGHT = 9;
+const DEFAULT_MINES = 10;
+const MINE = -1;
 
 let data = [];
 let firstMove = true;
 let mines = undefined;
 let width = undefined;
 let height = undefined;
+
+
 function startGame()
 {
     width = document.getElementById("widthInput").value;
@@ -19,6 +22,7 @@ function startGame()
     mines = document.getElementById("mineInput").value;
     if (mines == 0)
         mines = DEFAULT_MINES;
+    data = [];
     generateEmptyBoard(width, height);
 }
 function generateEmptyBoard(width, height)
@@ -27,15 +31,15 @@ function generateEmptyBoard(width, height)
     gameDiv.style.width = width * 32 + "px";
     gameDiv.style.height = height * 32 + "px";
     gameDiv.id = "game";
-    for (let i = 0; i < width; i++)
+    for (let i = 0; i < height; i++)
     {
-        for (let j = 0; j < height; j++)
+        for (let j = 0; j < width; j++)
         {
             let square = document.createElement("div");
             square.classList.add("tile", "blank");
-            let id = j + "_" + i;
-            data[id] = 0;
-            square.id = id;
+            let idString = toIdString(i, j);
+            data[idString] = 0;
+            square.id = idString;
             square.addEventListener("click", (ev) => { revealTile(square); })
             gameDiv.appendChild(square);
         }
@@ -53,8 +57,17 @@ function revealTile(tile)
         placeMines(tile);
         firstMove = false;
     }
-    let tileValue = data[tile.id];
-    // TODO
+
+}
+
+function toIdString(x, y)
+{
+    return x + "_" + y;
+}
+
+function fromIdString(id)
+{
+    return [+id.split('_')[0],+id.split('_')[1]];
 }
 
 function validPosition(posStr)
@@ -68,13 +81,48 @@ function validPosition(posStr)
  */
 function placeMines(firstTile)
 {
-    let surrounding = getSurroundingTiles(firstTile);
+    let protectedTiles = getSurroundingValidTiles(firstTile.id);
+    protectedTiles.push(firstTile.id);
+    for (let i = 0; i < mines; i++)
+    {
+        let x = Math.floor(Math.random() * height);
+        let y = Math.floor(Math.random() * width);
+        let xyStr = toIdString(x, y);
+        if (protectedTiles.includes(xyStr) || data[xyStr] === MINE) // tile is protected or already mined
+        {
+            i--;
+            continue;
+        }
+        data[xyStr] = MINE;
+    }
+    calculateAllNumbers();
 }
 
-function getSurroundingTiles(tile)
+function calculateAllNumbers()
 {
-    let x = +tile.id.split('_')[0];
-    let y = +tile.id.split('_')[1];
+    for (let i = 0; i < height; i++)
+    {
+        for (let j = 0; j < width; j++)
+        {
+            let idStr = toIdString(i, j);
+            if (data[idStr] !== MINE)
+            {
+                data[idStr] = getSurroundingValidTiles(idStr).reduce(
+                    (acc, tileId) => acc + (data[tileId] === MINE),
+                    0);
+            }
+        }
+    }
+}
+
+/**
+ *
+ * @param {string} tileId
+ * @returns {string[]}
+ */
+function getSurroundingValidTiles(tileId)
+{
+    let [x, y] = fromIdString(tileId);
     return [
              x-1 + "_" + y-1,
              x + "_" + y-1,
