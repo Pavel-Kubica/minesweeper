@@ -13,6 +13,8 @@ public:
     [[nodiscard]] int getNumber() const;
     void setNumber(int num);
 
+    bool operator==(const TileContent& rhs) const;
+    bool operator!=(const TileContent& rhs) const;
 private:
     int number;
 };

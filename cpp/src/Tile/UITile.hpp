@@ -21,6 +21,8 @@ public:
 
     void reveal();
 
+    bool operator==(const UITile& rhs) const;
+
 private:
     TileState state;
     TileContent content;

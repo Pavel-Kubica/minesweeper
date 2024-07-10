@@ -26,3 +26,14 @@ void TileContent::setNumber(int num)
 {
     number = num;
 }
+
+bool TileContent::operator==(const TileContent& rhs) const
+{
+    return number == rhs.number;
+}
+
+bool TileContent::operator!=(const TileContent& rhs) const
+{
+    return !(*this == rhs);
+}
+

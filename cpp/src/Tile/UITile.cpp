@@ -53,3 +53,8 @@ void UITile::reveal()
     else
         state = TileState::NUMBER;
 }
+
+bool UITile::operator==(const UITile& rhs) const
+{
+    return state == rhs.state && content == rhs.content;
+}

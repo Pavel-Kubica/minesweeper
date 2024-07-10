@@ -8,6 +8,9 @@ struct Position
 {
     int x;
     int y;
-    std::string toString() const;
     std::vector<Position> getAllAdjacent();
+
+    std::string toString() const;
+    bool operator==(const Position& rhs) const;
+    bool operator!=(const Position& rhs) const;
 };
