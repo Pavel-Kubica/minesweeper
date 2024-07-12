@@ -10,6 +10,20 @@ export class Tile
             this.value = value;
             this.state = state;
       }
+      getClass(): string
+      {
+            if (this.state == "num")
+                  return "num" + this.value;
+            return this.state;
+      }
+      reveal(): void
+      {
+
+      }
+      flag(): void
+      {
+
+      }
 }
 
 export function tileClass(tile: Tile): string

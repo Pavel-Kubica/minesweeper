@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import {GenerateEmptyBoard} from "@/app/game";
+import {GenerateEmptyBoard} from "@/app/tile-generation";
 
 export default function Home() {
   return (
