@@ -3,29 +3,40 @@
 import styles from "@/app/page.module.css";
 import {Tile, toId} from "@/app/tile";
 import {Board} from "@/app/board";
+import {useState} from "react";
 
-let gameBoard;
+let gameBoard = new Board(0, 0);
 
 export function TileDiv({tile, x, y})
 {
     const tileId = toId(x, y);
+    const [stateClass, setStateClass] = useState(styles["blank"]);
     return <div key={tileId}
-                className={styles[tile.getClass()] + " tile"}
+                className={stateClass + " tile"}
                 id={tileId}
                 onClick={(event) => {
+
                     if (event.button === 0)
                     {
-                        if (!tile.reveal() || tile.number === 0)
+                        let newlyRevealed = tile.reveal();
+                        if (newlyRevealed)
                         {
-                            gameBoard.rippleReveal(x, y);
+                            setStateClass(tile.getClass());
+                        }
+                        if (!newlyRevealed || tile.value === 0)
+                        {
+                            gameBoard.rippleReveal(tileId);
                         }
                     }
                     else if (event.button === 2)
-                        tile.flag();
+                    {
+                        if (tile.flag())
+                            setStateClass(tile.getClass());
+                    }
                 }}></div>
 }
 
-export function GenerateEmptyBoard({width, height})
+export function EmptyBoard({width, height})
 {
     gameBoard = new Board(width, height);
     let tiles = []

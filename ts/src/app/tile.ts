@@ -1,4 +1,6 @@
 
+import styles from "@/app/page.module.css"
+
 const MINE = -1;
 
 export class Tile
@@ -14,8 +16,8 @@ export class Tile
       getClass(): string
       {
             if (this.state == "num")
-                  return "num" + this.value;
-            return this.state;
+                  return styles["num" + this.value];
+            return styles[this.state];
       }
       reveal(): boolean
       {

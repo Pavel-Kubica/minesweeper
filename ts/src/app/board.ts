@@ -1,16 +1,15 @@
 import {fromId, getSurroundingTiles, Tile, toId} from "@/app/tile";
+import styles from "@/app/page.module.css"
 
 export class Board
 {
     width: number;
     height: number;
-    minesPlaced: boolean;
     data: Tile[];
     constructor(width: number, height: number)
     {
         this.width = width;
         this.height = height;
-        this.minesPlaced = false;
         this.data = [];
         for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {
@@ -20,14 +19,22 @@ export class Board
     }
     placeMines(tileId: string, mines: number)
     {
-        let protectedTiles = getSurroundingTiles(tileId).filter(this.validTile);
+        let protectedTiles = getSurroundingTiles(tileId).filter(this.validTile.bind(this));
         protectedTiles.push(tileId);
 
     }
-    rippleReveal(tileId: string)
+    rippleReveal(tileId: string, force: boolean = false)
     {
-        let surroundingTiles = getSurroundingTiles(tileId).filter(this.validTile);
-        
+        let tile = this.data[tileId];
+        tile.reveal();
+        document.getElementById(tileId).classList.replace(styles.blank, tile.getClass());
+        if (!force && this.data[tileId].value !== 0)
+            return;
+        let surroundingTiles = getSurroundingTiles(tileId).filter(this.validTile.bind(this));
+        for (const surroundingTile of surroundingTiles) {
+            if (this.data[surroundingTile].state === "blank")
+                this.rippleReveal(surroundingTile);
+        }
     }
 
     validTile(tileId)
