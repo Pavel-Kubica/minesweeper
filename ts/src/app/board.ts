@@ -53,6 +53,8 @@ export class Board
         {
             this.rippleReveal(tileId);
         }
+        else if (this.data[tileId].internalState === this.getMatchingSurrounding(tileId,(id) => this.data[id].isFlagged()).length)
+            this.rippleReveal(tileId, true);
     }
     plainRevealWithWinCheck(tileId)
     {
@@ -150,6 +152,8 @@ export class Board
     }
     toId(x: number, y: number): number
     {
+        if (x < 0 || y < 0 || x >= this.width || y >= this.height)
+            return -1;
         return x * this.height + y;
     }
     fromId(id: number): [number, number]

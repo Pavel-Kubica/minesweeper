@@ -1,8 +1,5 @@
-'use client';
-
 import styles from "./page.module.css";
-import {BoardCmpnt, GameWindow, TileCmpnt} from "@/app/components";
-import {Board} from "@/app/board";
+import {GameWindow} from "@/app/components";
 
 // todo load these from input
 const WIDTH = 9;
