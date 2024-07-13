@@ -1,66 +1,74 @@
 
 import styles from "@/app/page.module.css"
 
-const MINE = -1;
+export const MINE = -1;
 
 export class Tile
 {
-      value: number;
-      state: "blank" | "num" | "mine" | "hitMine" | "flag" | "wrongFlag";
-      constructor(value: number = 0, state: "blank" | "num" | "mine" | "hitMine" | "flag" | "wrongFlag" = "blank")
+      internalState: number;
+      externalState: "blank" | "mine" | "hitMine" | "num" | "flag" | "wrongFlag";
+
+      constructor(state: "blank" | "mine" | "hitMine" | "num" | "flag" | "wrongFlag" = "blank", value: number = 0)
       {
-            this.value = value;
-            this.state = state;
+            this.internalState = value;
+            this.externalState = state;
+      }
+
+      hasMine(): boolean
+      {
+            return this.internalState === MINE;
+      }
+      isFlagged(): boolean
+      {
+            return this.externalState === "flag";
+      }
+
+      isRevealed(): boolean
+      {
+            return this.externalState !== "flag" && this.externalState !== "blank";
+      }
+
+      isZero(): boolean
+      {
+            return this.internalState === 0;
       }
 
       getClass(): string
       {
-            if (this.state == "num")
-                  return styles["num" + this.value];
-            return styles[this.state];
+            if (this.externalState === "num")
+                  return styles["num" + this.internalState];
+            return styles[this.externalState];
       }
-      reveal(): boolean
+      playerReveal(): boolean
       {
-            if (this.state === "blank")
+            if (this.externalState === "blank")
             {
-                  this.state = "num";
+                  if (this.hasMine())
+                        this.externalState = "hitMine";
+                  else
+                        this.externalState = "num";
                   return true;
             }
             return false;
       }
+      autoReveal(): void
+      {
+            if (this.externalState === "blank")
+            {
+                  if (this.internalState === MINE)
+                        this.updateExternalState("mine")
+                  else
+                        this.updateExternalState("num");
+            }
+      }
       flag(): boolean
       {
-            if (this.state === "blank")
-                  this.state = "flag";
-            else if (this.state === "flag")
-                  this.state = "blank";
+            if (this.externalState === "blank")
+                  this.externalState = "flag";
+            else if (this.externalState === "flag")
+                  this.externalState = "blank";
             else
                   return false;
             return true;
       }
-}
-
-export function toId(x: number, y: number): string
-{
-      return "" + x + "_" + y;
-}
-
-export function fromId(id: string): [number, number]
-{
-      return [+id.split('_')[0],+id.split('_')[1]];
-}
-
-export function getSurroundingTiles(tileId)
-{
-      let [x, y] = fromId(tileId);
-      return [
-            toId(x-1, y-1),
-            toId(x, y-1),
-            toId(x+1, y-1),
-            toId(x-1, y),
-            toId(x+1, y),
-            toId(x-1, y+1),
-            toId(x, y+1),
-            toId(x+1, y+1)
-      ];
 }
