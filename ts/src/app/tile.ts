@@ -7,6 +7,7 @@ export class Tile
 {
       internalState: number;
       externalState: "blank" | "mine" | "hitMine" | "num" | "flag" | "wrongFlag";
+      divClassSetter;
 
       constructor(state: "blank" | "mine" | "hitMine" | "num" | "flag" | "wrongFlag" = "blank", value: number = 0)
       {
@@ -56,9 +57,9 @@ export class Tile
             if (this.externalState === "blank")
             {
                   if (this.internalState === MINE)
-                        this.updateExternalState("mine")
+                        this.externalState = "mine";
                   else
-                        this.updateExternalState("num");
+                        this.externalState = "num";
             }
       }
       flag(): boolean

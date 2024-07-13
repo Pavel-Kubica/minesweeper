@@ -28,22 +28,17 @@ export class Board
 
     handleClick(tileId)
     {
-
-        return function(divClassSetter)
+        return function(event)
+        {
+            if (event.button === 0)
             {
-
-                return function(event)
-                {
-                    if (event.button === 0)
-                    {
-                        this.revealTile(tileId);
-                    }
-                    else if (event.button === 2)
-                    {
-                        this.flagTile(tileId);
-                    }
-                }.bind(this);
-            }.bind(this);
+                this.revealTile(tileId);
+            }
+            else if (event.button === 2)
+            {
+                this.flagTile(tileId);
+            }
+        }.bind(this);
     }
 
     revealTile(tileId)
@@ -61,7 +56,8 @@ export class Board
     }
     plainRevealWithWinCheck(tileId)
     {
-        this.data[tileId].playerReveal();
+        if (!this.data[tileId].playerReveal())
+            return;
         if (this.data[tileId].hasMine())
             this.lose();
         else
@@ -72,12 +68,12 @@ export class Board
     }
     flagTile(tileId)
     {
-
+        this.data[tileId].flag();
     }
-    placeMines(tileId: string, mines: number)
+    placeMines(tileId: number, mines: number)
     {
         this.mines = mines;
-        let protectedTiles = getSurroundingTiles(tileId).filter(this.validTile.bind(this));
+        let protectedTiles = this.getSurroundingTiles(tileId);
         protectedTiles.push(tileId);
         for (let i = 0; i < mines; i++)
         {
@@ -95,26 +91,22 @@ export class Board
         }
         this.calculateAllNumbers();
     }
-    rippleReveal(tileId: string, force: boolean = false)
+    rippleReveal(tileId: number, force: boolean = false)
     {
-        this.data[tileId].playerReveal();
-        if (!force && this.data[tileId].value !== 0)
+        this.plainRevealWithWinCheck(tileId);
+        if (!force && !this.data[tileId].isZero())
             return;
-        let surroundingTiles = getSurroundingTiles(tileId);
+        let surroundingTiles = this.getSurroundingTiles(tileId);
         for (const surroundingTile of surroundingTiles)
         {
-            if (this.data[surroundingTile].state === "blank")
+            if (this.data[surroundingTile].externalState === "blank")
                 this.rippleReveal(surroundingTile);
         }
     }
 
     validTile(tileId)
     {
-        let [x, y] = this.fromId(tileId);
-        if (x < 0 || x >= this.width ||
-            y < 0 || y >= this.height)
-            return false;
-        return true;
+        return tileId >= 0 && tileId < this.width * this.height;
 
     }
 
@@ -176,6 +168,6 @@ export class Board
             this.toId(x-1, y+1),
             this.toId(x, y+1),
             this.toId(x+1, y+1)
-        ];
+        ].filter(this.validTile.bind(this));
     }
 }
