@@ -5,6 +5,7 @@ import {useState} from "react";
 
 export function TileCmpnt({tileId, clickCallback})
 {
+    console.log("tile being created");
     const [className, setClassName] = useState(styles.blank)
     return <div key={tileId}
                 id={tileId}
@@ -14,7 +15,7 @@ export function TileCmpnt({tileId, clickCallback})
     </div>
 }
 
-export function BoardCmpnt()
+export function BoardCmpnt({children})
 {
     return (
         <div id="game"
@@ -22,6 +23,7 @@ export function BoardCmpnt()
              onContextMenu={(e) => e.preventDefault()}
              onDragStart={(e) => e.preventDefault()}
         >
+            {children}
         </div>
     )
 }

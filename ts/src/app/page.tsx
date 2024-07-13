@@ -16,14 +16,14 @@ export default function Home()
             <div className="game-window"
                  style={{width: WIDTH * 32 + "px", height: HEIGHT * 32 + "px"}}>
                 <BoardCmpnt>
-                {
-                    gameBoard.data.map(
-                        function(tile, index)
-                        {
-                            console.log(index);
-                            return <TileCmpnt key={index} tileId={index} clickCallback={gameBoard.handleClick(index)}/>
-                        })
-                }
+                    {
+                        gameBoard.data.map(
+                            function(tile, index)
+                            {
+                                console.log(index);
+                                return <TileCmpnt key={index} tileId={index} clickCallback={gameBoard.handleClick(index)}/>
+                            })
+                    }
                 </BoardCmpnt>
             </div>
         </main>
