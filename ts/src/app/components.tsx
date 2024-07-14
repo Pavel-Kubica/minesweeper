@@ -57,6 +57,19 @@ const DEFAULT_HEIGHT = 16;
 const MAX_HEIGHT = 50;
 const DEFAULT_MINES = 99;
 
+function InputField({value, setValue, validationFunction})
+{
+    return (
+        <input value={value}
+               onChange={(event) =>
+               {
+                   if (validationFunction(event.target.value))
+                       setValue(event.target.value);
+               }}
+        />
+    )
+}
+
 export function Game({children})
 {
     const [width, setWidth] = useState<number>(DEFAULT_WIDTH);
@@ -68,35 +81,17 @@ export function Game({children})
         <>
         <label>
             Width:
-            <input type={"number"} value={width}
-                   onChange={(event) =>
-                   {
-                       if (event.target.value > 0 && event.target.value <= MAX_WIDTH)
-                            setWidth(event.target.value);
-                   }}
-            />
+            <InputField value={width} setValue={setWidth} validationFunction={value => value > 0 && value <= MAX_WIDTH}/>
         </label>
         <br/>
         <label>
             Height:
-            <input type={"number"} value={height}
-                   onChange={(event) =>
-                   {
-                       if (event.target.value > 0 && event.target.value <= MAX_HEIGHT)
-                           setHeight(event.target.value);
-                   }}
-            />
+            <InputField value={height} setValue={setHeight} validationFunction={value => value > 0 && value <= MAX_HEIGHT}/>
         </label>
         <br/>
         <label>
             Mines:
-            <input type={"number"} value={mines}
-                   onChange={(event) =>
-                   {
-                       if (event.target.value > 0 && event.target.value <= width * height - 10)
-                           setMines(event.target.value);
-                   }}
-            />
+            <InputField value={mines} setValue={setMines} validationFunction={value => value > 0 && value <= width * height - 10}/>
         </label>
         <br/>
         <button type={"button"}
