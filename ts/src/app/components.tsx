@@ -38,9 +38,9 @@ export function BoardCmpnt({gameBoard, children})
     )
 }
 
-export function GameWindow({width, height, children})
+export function GameWindow({width, height, mines, children})
 {
-    let gameBoard = new Board(width, height);
+    let gameBoard = new Board(width, height, mines);
     return (
     <div className="game-window"
          style={{width: width * 32 + "px", height: height * 32 + "px"}}
@@ -55,10 +55,13 @@ const DEFAULT_WIDTH = 30;
 const MAX_WIDTH = 50;
 const DEFAULT_HEIGHT = 16;
 const MAX_HEIGHT = 50;
+const DEFAULT_MINES = 99;
+
 export function Game({children})
 {
     const [width, setWidth] = useState<number>(DEFAULT_WIDTH);
     const [height, setHeight] = useState<number>(DEFAULT_HEIGHT);
+    const [mines, setMines] = useState<number>(DEFAULT_MINES)
     const [gameWindow, setGameWindow] = useState([]);
 
     return (
@@ -73,6 +76,7 @@ export function Game({children})
                    }}
             />
         </label>
+        <br/>
         <label>
             Height:
             <input type={"number"} value={height}
@@ -83,8 +87,20 @@ export function Game({children})
                    }}
             />
         </label>
+        <br/>
+        <label>
+            Mines:
+            <input type={"number"} value={mines}
+                   onChange={(event) =>
+                   {
+                       if (event.target.value > 0 && event.target.value <= width * height - 10)
+                           setMines(event.target.value);
+                   }}
+            />
+        </label>
+        <br/>
         <button type={"button"}
-                onClick={() => setGameWindow(<GameWindow width={width} height={height}/>)}
+                onClick={() => setGameWindow(<GameWindow width={width} height={height} mines={mines}/>)}
         >
             Start
         </button>

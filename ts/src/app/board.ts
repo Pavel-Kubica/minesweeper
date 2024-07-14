@@ -9,11 +9,11 @@ export class Board
     minesPlaced: boolean;
     safeRevealed: number;
     data: Tile[];
-    constructor(width: number, height: number)
+    constructor(width: number, height: number, mines: number)
     {
         this.width = width;
         this.height = height;
-        this.mines = 0;
+        this.mines = mines;
         this.minesPlaced = false;
         this.safeRevealed = 0;
         this.data = [];
@@ -45,7 +45,7 @@ export class Board
     {
         if (!this.minesPlaced)
         {
-            this.placeMines(tileId, 10);
+            this.placeMines(tileId);
             this.minesPlaced = true;
         }
         this.plainRevealWithWinCheck(tileId)
@@ -72,12 +72,11 @@ export class Board
     {
         this.data[tileId].flag();
     }
-    placeMines(tileId: number, mines: number)
+    placeMines(tileId: number)
     {
-        this.mines = mines;
         let protectedTiles = this.getSurroundingTiles(tileId);
         protectedTiles.push(tileId);
-        for (let i = 0; i < mines; i++)
+        for (let i = 0; i < this.mines; i++)
         {
             let x = Math.floor(Math.random() * this.width);
             let y = Math.floor(Math.random() * this.height);
