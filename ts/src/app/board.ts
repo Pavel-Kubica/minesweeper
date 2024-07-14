@@ -121,14 +121,14 @@ export class Board
                 let tileId = this.toId(x, y);
                 if(!this.data[tileId].hasMine())
                 {
-                    this.data[tileId].internalState = this.getMatchingSurrounding(tileId, (tileId) => this.data[tileId].hasMine()) .length;
+                    this.data[tileId].internalState = this.getMatchingSurrounding(tileId, (id) => this.data[id].hasMine()).length;
                 }
             }
         }
     }
     getMatchingSurrounding(tileId: number, check: (tileId: number) => boolean): number[]
     {
-        return this.getSurroundingTiles(tileId).filter(this.validTile.bind(this)).filter(check);
+        return this.getSurroundingTiles(tileId).filter(check);
     }
     win()
     {
@@ -154,11 +154,11 @@ export class Board
     {
         if (x < 0 || y < 0 || x >= this.width || y >= this.height)
             return -1;
-        return x * this.height + y;
+        return y * this.width + x;
     }
     fromId(id: number): [number, number]
     {
-        return [Math.floor(id / this.height), id % this.height];
+        return [id % this.width, Math.floor(id / this.width)];
     }
     getSurroundingTiles(tileId)
     {

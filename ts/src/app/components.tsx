@@ -41,7 +41,6 @@ export function BoardCmpnt({gameBoard, children})
 export function GameWindow({width, height, children})
 {
     let gameBoard = new Board(width, height);
-    console.log("drawing game window");
     return (
     <div className="game-window"
          style={{width: width * 32 + "px", height: height * 32 + "px"}}
