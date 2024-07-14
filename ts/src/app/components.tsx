@@ -18,8 +18,8 @@ export function BoardCmpnt({gameBoard, children})
 {
     const [clicks, setClicks] = useState(0);
     return (
-        <div id="game"
-             className={styles.game}
+        <div id="board"
+             className={styles.board}
              onContextMenu={(e) => e.preventDefault()}
              onDragStart={(e) => e.preventDefault()}
              onMouseUp={() => setClicks(clicks + 1)}
@@ -49,5 +49,48 @@ export function GameWindow({width, height, children})
         <BoardCmpnt gameBoard={gameBoard}>
         </BoardCmpnt>
     </div>
+    )
+}
+
+const DEFAULT_WIDTH = 30;
+const MAX_WIDTH = 50;
+const DEFAULT_HEIGHT = 16;
+const MAX_HEIGHT = 50;
+export function Game({children})
+{
+    const [width, setWidth] = useState<number>(DEFAULT_WIDTH);
+    const [height, setHeight] = useState<number>(DEFAULT_HEIGHT);
+    const [gameWindow, setGameWindow] = useState([]);
+
+    return (
+        <>
+        <label>
+            Width:
+            <input type={"number"} value={width}
+                   onChange={(event) =>
+                   {
+                       if (event.target.value > 0 && event.target.value <= MAX_WIDTH)
+                            setWidth(event.target.value);
+                   }}
+            />
+        </label>
+        <label>
+            Height:
+            <input type={"number"} value={height}
+                   onChange={(event) =>
+                   {
+                       if (event.target.value > 0 && event.target.value <= MAX_HEIGHT)
+                           setHeight(event.target.value);
+                   }}
+            />
+        </label>
+        <button type={"button"}
+                onClick={() => setGameWindow(<GameWindow width={width} height={height}/>)}
+        >
+            Start
+        </button>
+            {gameWindow}
+            {children}
+        </>
     )
 }

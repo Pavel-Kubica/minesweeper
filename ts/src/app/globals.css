@@ -6,7 +6,7 @@ div {
     display: block;
 }
 
-#game div {
+#board div {
     float: left;
     background-image: url("../../public/sprite.gif");
 }
