@@ -9,6 +9,7 @@ export class Board
     minesPlaced: boolean;
     safeRevealed: number;
     data: Tile[];
+    gameFinished: boolean;
     constructor(width: number, height: number, mines: number)
     {
         this.width = width;
@@ -24,12 +25,15 @@ export class Board
                 this.data[this.toId(x, y)] = new Tile();
             }
         }
+        this.gameFinished = false;
     }
 
     handleClick(tileId)
     {
         return function(event)
         {
+            if (this.gameFinished)
+                return;
             if (event.button === 0)
             {
                 this.revealTile(tileId);
@@ -133,12 +137,12 @@ export class Board
     }
     win()
     {
-        alert("WON");
+        this.gameFinished = true;
         this.revealAllMines();
     }
     lose()
     {
-        alert("LOST")
+        this.gameFinished = true;
         this.revealAllMines();
     }
     revealAllMines()
