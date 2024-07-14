@@ -48,18 +48,19 @@ export class Board
             this.placeMines(tileId);
             this.minesPlaced = true;
         }
-        this.plainRevealWithWinCheck(tileId)
+        let newlyRevealed = this.plainRevealWithWinCheck(tileId);
         if (this.data[tileId].isZero())
         {
             this.rippleReveal(tileId);
         }
-        else if (this.data[tileId].internalState === this.getMatchingSurrounding(tileId,(id) => this.data[id].isFlagged()).length)
+        else if (!newlyRevealed &&
+                this.data[tileId].internalState === this.getMatchingSurrounding(tileId,(id) => this.data[id].isFlagged()).length) // The number of flags around this tile matches its number
             this.rippleReveal(tileId, true);
     }
-    plainRevealWithWinCheck(tileId)
+    plainRevealWithWinCheck(tileId): boolean
     {
         if (!this.data[tileId].playerReveal())
-            return;
+            return false;
         if (this.data[tileId].hasMine())
             this.lose();
         else
@@ -67,6 +68,7 @@ export class Board
             if (++this.safeRevealed >= this.width * this.height - this.mines)
                 this.win();
         }
+        return true;
     }
     flagTile(tileId)
     {

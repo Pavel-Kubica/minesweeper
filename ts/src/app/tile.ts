@@ -40,6 +40,10 @@ export class Tile
                   return styles["num" + this.internalState];
             return styles[this.externalState];
       }
+
+      /**
+       * returns true if tile wasn't revealed before
+       */
       playerReveal(): boolean
       {
             if (this.externalState === "blank")
