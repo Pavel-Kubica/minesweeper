@@ -4,7 +4,7 @@ import styles from "@/app/page.module.css";
 import {useState} from "react";
 import {Board} from "@/app/board";
 
-export function TileCmpnt({tileId, className, clickCallback})
+export function UITile({tileId, className, clickCallback})
 {
     return <div key={tileId}
                 id={tileId}
@@ -14,7 +14,7 @@ export function TileCmpnt({tileId, className, clickCallback})
     </div>
 }
 
-export function BoardCmpnt({gameBoard, children})
+export function GameBoard({gameBoard, children})
 {
     const [clicks, setClicks] = useState(0);
     return (
@@ -28,8 +28,8 @@ export function BoardCmpnt({gameBoard, children})
                 gameBoard.data.map(
                     function(tile, index)
                     {
-                        return <TileCmpnt key={index} tileId={index} className={tile.getClass()}
-                                          clickCallback={gameBoard.handleClick(index)}/>;
+                        return <UITile key={index} tileId={index} className={tile.getClass()}
+                                       clickCallback={gameBoard.handleClick(index)}/>;
                     })
             }
             {children}
@@ -45,8 +45,8 @@ export function GameWindow({width, height, mines, children})
     <div className="game-window"
          style={{width: width * 32 + "px", height: height * 32 + "px"}}
     >
-        <BoardCmpnt gameBoard={gameBoard}>
-        </BoardCmpnt>
+        <GameBoard gameBoard={gameBoard}>
+        </GameBoard>
     </div>
     )
 }
