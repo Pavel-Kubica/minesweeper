@@ -16,13 +16,23 @@ export function UITile({tileId, className, clickCallback})
 
 export function GameBoard({gameBoard, children})
 {
-    const [clicks, setClicks] = useState(0);
+    const [a, update] = useState(0);
+    const rerender = () => update(a + 1);
+
+    const [timer, setTimer] = useState(0);
     return (
         <div id="board"
              className={styles.board}
              onContextMenu={(e) => e.preventDefault()}
              onDragStart={(e) => e.preventDefault()}
-             onMouseUp={() => setClicks(clicks + 1)}
+             onMouseUp={() =>
+             {
+                 if (gameBoard.timer === undefined)
+                 {
+                     gameBoard.startTimer(setTimer);
+                 }
+                 rerender();
+             }}
         >
             {
                 gameBoard.data.map(
@@ -33,7 +43,7 @@ export function GameBoard({gameBoard, children})
                     })
             }
             {children}
-            <h1>{clicks}</h1>
+            <h1>{timer}</h1>
         </div>
     )
 }
@@ -47,6 +57,7 @@ export function GameWindow({width, height, mines, children})
     >
         <GameBoard gameBoard={gameBoard}>
         </GameBoard>
+        {children}
     </div>
     )
 }

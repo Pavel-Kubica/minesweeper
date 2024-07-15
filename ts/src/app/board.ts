@@ -6,16 +6,18 @@ export class Board
     width: number;
     height: number;
     mines: number;
-    minesPlaced: boolean;
+    gameStarted: boolean;
     safeRevealed: number;
     data: Tile[];
     gameFinished: boolean;
+    secondsCounter: number;
+    timer;
     constructor(width: number, height: number, mines: number)
     {
         this.width = width;
         this.height = height;
         this.mines = mines;
-        this.minesPlaced = false;
+        this.gameStarted = false;
         this.safeRevealed = 0;
         this.data = [];
         for (let y = 0; y < height; y++)
@@ -26,8 +28,9 @@ export class Board
             }
         }
         this.gameFinished = false;
+        this.secondsCounter = 0;
+        this.timer = undefined;
     }
-
     handleClick(tileId)
     {
         return function(event)
@@ -44,13 +47,20 @@ export class Board
             }
         }.bind(this);
     }
-
+    startTimer(setter)
+    {
+        this.timer = setInterval(() => setter(++this.secondsCounter), 1000);
+    }
+    endTimer()
+    {
+        clearInterval(this.timer);
+    }
     revealTile(tileId)
     {
-        if (!this.minesPlaced)
+        if (!this.gameStarted)
         {
             this.placeMines(tileId);
-            this.minesPlaced = true;
+            this.gameStarted = true;
         }
         let newlyRevealed = this.plainRevealWithWinCheck(tileId);
         if (this.data[tileId].isZero())
@@ -139,11 +149,13 @@ export class Board
     {
         this.gameFinished = true;
         this.revealAllMines();
+        this.endTimer();
     }
     lose()
     {
         this.gameFinished = true;
         this.revealAllMines();
+        this.endTimer()
     }
     revealAllMines()
     {
