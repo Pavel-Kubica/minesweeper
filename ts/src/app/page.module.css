@@ -1,0 +1,81 @@
+.main {
+
+}
+
+.board {
+    background-color: silver;
+}
+
+
+
+.blank {
+    background-position: 0 -32px;
+    width: 32px;
+    height: 32px;
+}
+
+.num0 {
+    background-position: 0 0;
+    width: 32px;
+    height: 32px;
+}
+.num1 {
+    background-position: -32px 0;
+    width: 32px;
+    height: 32px;
+}
+.num2 {
+    background-position: -64px 0;
+    width: 32px;
+    height: 32px;
+}
+.num3 {
+    background-position: -96px 0;
+    width: 32px;
+    height: 32px;
+}
+.num4 {
+    background-position: -128px 0;
+    width: 32px;
+    height: 32px;
+}
+.num5 {
+    background-position: -160px 0;
+    width: 32px;
+    height: 32px;
+}
+.num6 {
+    background-position: -192px 0;
+    width: 32px;
+    height: 32px;
+}
+.num7 {
+    background-position: -224px 0;
+    width: 32px;
+    height: 32px;
+}
+.num8 {
+    background-position: -256px 0;
+    width: 32px;
+    height: 32px;
+}
+.flag {
+    background-position: -32px -32px;
+    width: 32px;
+    height: 32px;
+}
+.hitMine {
+    background-position: -64px -32px;
+    width: 32px;
+    height: 32px;
+}
+.wrongFlag {
+    background-position: -96px -32px;
+    width: 32px;
+    height: 32px;
+}
+.mine {
+    background-position: -128px -32px;
+    width: 32px;
+    height: 32px;
+}

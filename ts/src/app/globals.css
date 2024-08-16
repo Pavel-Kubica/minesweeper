@@ -1,0 +1,12 @@
+:root {
+
+}
+
+div {
+    display: block;
+}
+
+#board div {
+    float: left;
+    background-image: url("../../public/sprite.gif");
+}
