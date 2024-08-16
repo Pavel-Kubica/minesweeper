@@ -3,6 +3,7 @@
 import styles from "@/app/page.module.css";
 import {useState} from "react";
 import {Board} from "@/app/board";
+import {Game} from "@/app/game";
 
 export function UITile({tileId, className, clickCallback})
 {
@@ -14,7 +15,7 @@ export function UITile({tileId, className, clickCallback})
     </div>
 }
 
-export function GameBoard({gameBoard, children})
+export function GameBoard({game, children})
 {
     const [a, update] = useState(0);
     const rerender = () => update(a + 1);
@@ -27,19 +28,19 @@ export function GameBoard({gameBoard, children})
              onDragStart={(e) => e.preventDefault()}
              onMouseUp={() =>
              {
-                 if (gameBoard.timer === undefined)
+                 if (game.timer === undefined)
                  {
-                     gameBoard.startTimer(setTimer);
+                     game.startTimer(setTimer);
                  }
                  rerender();
              }}
         >
             {
-                gameBoard.data.map(
+                game.board.data.map(
                     function(tile, index)
                     {
                         return <UITile key={index} tileId={index} className={tile.getClass()}
-                                       clickCallback={gameBoard.handleClick(index)}/>;
+                                       clickCallback={game.handleClick(index)}/>;
                     })
             }
             {children}
@@ -50,12 +51,14 @@ export function GameBoard({gameBoard, children})
 
 export function GameWindow({width, height, mines, children})
 {
-    let gameBoard = new Board(width, height, mines);
+    // Have to create Game here so it doesn't get remade after every click
+    let board = new Board(width, height, mines);
+    let game = new Game(board);
     return (
     <div className="game-window"
          style={{width: width * 32 + "px", height: height * 32 + "px"}}
     >
-        <GameBoard gameBoard={gameBoard}>
+        <GameBoard game={game}>
         </GameBoard>
         {children}
     </div>
@@ -81,7 +84,7 @@ function InputField({value, setValue, validationFunction})
     )
 }
 
-export function Game({children})
+export function App({children})
 {
     const [width, setWidth] = useState<number>(DEFAULT_WIDTH);
     const [height, setHeight] = useState<number>(DEFAULT_HEIGHT);

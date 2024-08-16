@@ -1,24 +1,20 @@
 import {MINE, Tile} from "@/app/tile";
-import styles from "@/app/page.module.css"
-
+import {BoardState} from "@/app/boardstate";
 export class Board
 {
     width: number;
     height: number;
     mines: number;
-    gameStarted: boolean;
     safeRevealed: number;
+    boardState: BoardState
     data: Tile[];
-    gameFinished: boolean;
-    secondsCounter: number;
-    timer;
     constructor(width: number, height: number, mines: number)
     {
         this.width = width;
         this.height = height;
         this.mines = mines;
-        this.gameStarted = false;
         this.safeRevealed = 0;
+        this.boardState = BoardState.NOT_STARTED;
         this.data = [];
         for (let y = 0; y < height; y++)
         {
@@ -27,41 +23,17 @@ export class Board
                 this.data[this.toId(x, y)] = new Tile();
             }
         }
-        this.gameFinished = false;
-        this.secondsCounter = 0;
-        this.timer = undefined;
     }
-    handleClick(tileId)
+    finished(): boolean
     {
-        return function(event)
-        {
-            if (this.gameFinished)
-                return;
-            if (event.button === 0)
-            {
-                this.revealTile(tileId);
-            }
-            else if (event.button === 2)
-            {
-                this.flagTile(tileId);
-            }
-        }.bind(this);
+        return this.boardState === BoardState.LOST || this.boardState === BoardState.WON;
     }
-    startTimer(setter)
+    started(): boolean
     {
-        this.timer = setInterval(() => setter(++this.secondsCounter), 1000);
-    }
-    endTimer()
-    {
-        clearInterval(this.timer);
+        return this.boardState !== BoardState.NOT_STARTED;
     }
     revealTile(tileId)
     {
-        if (!this.gameStarted)
-        {
-            this.placeMines(tileId);
-            this.gameStarted = true;
-        }
         let newlyRevealed = this.plainRevealWithWinCheck(tileId);
         if (this.data[tileId].isZero())
         {
@@ -90,6 +62,7 @@ export class Board
     }
     placeMines(tileId: number)
     {
+        this.boardState = BoardState.IN_PLAY;
         let protectedTiles = this.getSurroundingTiles(tileId);
         protectedTiles.push(tileId);
         for (let i = 0; i < this.mines; i++)
@@ -124,7 +97,6 @@ export class Board
     validTile(tileId)
     {
         return tileId >= 0 && tileId < this.width * this.height;
-
     }
 
     calculateAllNumbers()
@@ -147,15 +119,13 @@ export class Board
     }
     win()
     {
-        this.gameFinished = true;
         this.revealAllMines();
-        this.endTimer();
+        this.boardState = BoardState.WON;
     }
     lose()
     {
-        this.gameFinished = true;
         this.revealAllMines();
-        this.endTimer()
+        this.boardState = BoardState.LOST;
     }
     revealAllMines()
     {
