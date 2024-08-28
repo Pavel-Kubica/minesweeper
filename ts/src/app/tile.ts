@@ -41,6 +41,12 @@ export class Tile
             return styles[this.externalState];
       }
 
+      setExternalState(externalState: "blank" | "mine" | "hitMine" | "num" | "flag" | "wrongFlag"): void
+      {
+            this.externalState = externalState;
+            this.divClassSetter(this.getClass())
+      }
+
       /**
        * returns true if tile wasn't revealed before
        */
@@ -49,9 +55,9 @@ export class Tile
             if (this.externalState === "blank")
             {
                   if (this.hasMine())
-                        this.externalState = "hitMine";
+                        this.setExternalState("hitMine")
                   else
-                        this.externalState = "num";
+                      this.setExternalState("num")
                   return true;
             }
             return false;
@@ -61,17 +67,17 @@ export class Tile
             if (this.externalState === "blank")
             {
                   if (this.internalState === MINE)
-                        this.externalState = "mine";
+                        this.setExternalState("mine")
                   else
-                        this.externalState = "num";
+                        this.setExternalState("num")
             }
       }
       flag(): boolean
       {
             if (this.externalState === "blank")
-                  this.externalState = "flag";
+                  this.setExternalState("flag");
             else if (this.externalState === "flag")
-                  this.externalState = "blank";
+                  this.setExternalState("blank");
             else
                   return false;
             return true;

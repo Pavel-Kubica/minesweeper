@@ -1,12 +1,14 @@
 'use client';
 
 import styles from "@/app/page.module.css";
-import {useState} from "react";
+import {useRef, useState} from "react";
 import {Board} from "@/app/board";
 import {Game} from "@/app/game";
 
-export function UITile({tileId, className, clickCallback})
+export function UITile({tileId, tile, clickCallback})
 {
+    const [className, setClassName] = useState(tile.getClass());
+    tile.divClassSetter = setClassName;
     return <div key={tileId}
                 id={tileId}
                 className={className}
@@ -17,9 +19,6 @@ export function UITile({tileId, className, clickCallback})
 
 export function GameBoard({game, children})
 {
-    const [a, update] = useState(0);
-    const rerender = () => update(a + 1);
-
     const [timer, setTimer] = useState(0);
     return (
         <div id="board"
@@ -32,14 +31,13 @@ export function GameBoard({game, children})
                  {
                      game.startTimer(setTimer);
                  }
-                 rerender();
              }}
         >
             {
                 game.board.data.map(
                     function(tile, index)
                     {
-                        return <UITile key={index} tileId={index} className={tile.getClass()}
+                        return <UITile key={crypto.randomUUID()} tileId={index} tile={tile}
                                        clickCallback={game.handleClick(index)}/>;
                     })
             }
