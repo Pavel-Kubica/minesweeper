@@ -1,17 +1,16 @@
 import {Board} from "@/app/board";
-import {Tile} from "@/app/tile";
+import {BoardState} from "@/app/boardstate";
 
 export class Game
 {
     board: Board
-    secondsCounter: number;
-    timer: any;
+    static secondsCounter: number = 0;
+    static timer: any = undefined;
+    static timerStarted: boolean = false;
 
     constructor(board: Board)
     {
         this.board = board;
-        this.secondsCounter = 0;
-        this.timer = undefined;
     }
     handleClick(tileId)
     {
@@ -35,17 +34,26 @@ export class Game
 
             if (this.board.finished())
             {
-                this.endTimer();
+                Game.endTimer();
             }
         }.bind(this);
     }
 
-    startTimer(setter)
+    static initializeTimer()
     {
-        this.timer = setInterval(() => setter(++this.secondsCounter), 1000);
+        this.endTimer()
+        Game.timerStarted = false;
+        this.secondsCounter = 0;
     }
-    endTimer()
+    static startTimer(setter)
     {
-        clearInterval(this.timer);
+        setter(0);
+        Game.timer = setInterval(() => setter(++Game.secondsCounter), 1000);
+        Game.timerStarted = true;
+    }
+    static endTimer()
+    {
+        clearInterval(Game.timer);
+        Game.timer = undefined;
     }
 }

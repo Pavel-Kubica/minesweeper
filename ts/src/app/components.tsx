@@ -5,7 +5,7 @@ import {useRef, useState} from "react";
 import {Board} from "@/app/board";
 import {Game} from "@/app/game";
 
-export function UITile({tileId, tile, clickCallback})
+function UITile({tileId, tile, clickCallback})
 {
     const [className, setClassName] = useState(tile.getClass());
     tile.divClassSetter = setClassName;
@@ -17,7 +17,12 @@ export function UITile({tileId, tile, clickCallback})
     </div>
 }
 
-export function GameBoard({game, children})
+function Timer({time})
+{
+    return <h1>{time}</h1>
+}
+
+function GameBoard({game, children})
 {
     const [timer, setTimer] = useState(0);
     return (
@@ -27,9 +32,9 @@ export function GameBoard({game, children})
              onDragStart={(e) => e.preventDefault()}
              onMouseUp={() =>
              {
-                 if (game.timer === undefined)
+                 if (!Game.timerStarted)
                  {
-                     game.startTimer(setTimer);
+                     Game.startTimer(setTimer);
                  }
              }}
         >
@@ -42,16 +47,17 @@ export function GameBoard({game, children})
                     })
             }
             {children}
-            <h1>{timer}</h1>
+            <Timer time={timer}/>
         </div>
     )
 }
 
-export function GameWindow({width, height, mines, children})
+function GameWindow({width, height, mines, children})
 {
     // Have to create Game here so it doesn't get remade after every click
     let board = new Board(width, height, mines);
     let game = new Game(board);
+    Game.initializeTimer();
     return (
     <div className="game-window"
          style={{width: width * 32 + "px", height: height * 32 + "px"}}
